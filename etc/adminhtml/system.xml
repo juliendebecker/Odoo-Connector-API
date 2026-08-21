@@ -40,6 +40,26 @@
                     <comment><![CDATA[Order will cancel in odoo when order is cancel in store]]></comment>
                 </field>
             </group>
+            <group id="refund" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Odoo Refund Bridge</label>
+                <field id="preview_ttl" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preview Token Lifetime (seconds)</label>
+                    <comment><![CDATA[How long a refund preview_token stays acceptable. Default 900. Keep it short: the token only certifies a snapshot of the order.]]></comment>
+                </field>
+                <field id="lock_timeout" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Refund Lock Timeout (seconds)</label>
+                    <comment><![CDATA[How long a refund commit waits for the per-order lock before returning 409 LOCK_TIMEOUT. Default 10.]]></comment>
+                </field>
+                <field id="in_progress_ttl" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Stale Claim Takeover Delay (seconds)</label>
+                    <comment><![CDATA[How long an idempotency_key claimed but never finished - a refund process killed mid-flight - stays blocked before a retry with the same key and the same payload may take it over. The retry still needs a valid preview token and is still checked by the guard, so it cannot produce a second credit memo. Default 900. Set to 0 to never take such a claim over: it then returns 409 IDEMPOTENCY_IN_PROGRESS until it is resolved by hand.]]></comment>
+                </field>
+                <field id="atomic_verify" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Roll Back Offline Refunds On Total Mismatch</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Wraps an offline refund in an outer database transaction so a credit memo whose persisted total differs from the previewed total is rolled back. Has no effect on online refunds: the payment gateway call cannot be rolled back. Default Yes.]]></comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>

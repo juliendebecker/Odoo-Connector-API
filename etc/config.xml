@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <apichange>
+            <refund>
+                <preview_ttl>900</preview_ttl>
+                <lock_timeout>10</lock_timeout>
+                <atomic_verify>1</atomic_verify>
+                <in_progress_ttl>900</in_progress_ttl>
+            </refund>
+        </apichange>
+    </default>
+</config>

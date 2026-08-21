@@ -13,6 +13,13 @@
     <preference for="Emipro\Apichange\Api\StockInterface" type="Emipro\Apichange\Model\Stock" />
 	<preference for="Emipro\Apichange\Api\Data\UpdateStockInterface"
         type="Emipro\Apichange\Model\UpdateStock" />
+    <!-- Odoo driven refunds: preview + guarded commit -->
+    <preference for="Emipro\Apichange\Api\RefundPreviewInterface" type="Emipro\Apichange\Model\RefundPreview" />
+    <preference for="Emipro\Apichange\Api\RefundInterface" type="Emipro\Apichange\Model\RefundCommit" />
+    <preference for="Emipro\Apichange\Api\Data\RefundRequestInterface"
+        type="Emipro\Apichange\Model\Refund\Data\RefundRequest" />
+    <preference for="Emipro\Apichange\Api\Data\RefundItemInterface"
+        type="Emipro\Apichange\Model\Refund\Data\RefundItem" />
     <type name="Magento\Catalog\Model\ProductRepository">
 		<plugin name="Emipro_Apichange::addWebsiteids" type="Emipro\Apichange\Plugin\Product\ProductRepository" />
 	</type>

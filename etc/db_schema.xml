@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Durable idempotency ledger for Odoo driven refunds.
+ *
+ * The unique index on idempotency_key is what makes the claim atomic: two
+ * concurrent commits with the same key race on the INSERT and exactly one wins,
+ * whatever the application level lock does.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="emipro_apichange_refund_idempotency" resource="default" engine="innodb" comment="Emipro Apichange Refund Idempotency Ledger">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+        <column xsi:type="varchar" name="idempotency_key" length="128" nullable="false" comment="Caller Supplied Idempotency Key"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Sales Order Entity Id"/>
+        <column xsi:type="int" name="invoice_id" unsigned="true" nullable="true" comment="Sales Invoice Entity Id"/>
+        <column xsi:type="varchar" name="source" length="16" nullable="false" comment="order|invoice"/>
+        <column xsi:type="varchar" name="payload_hash" length="80" nullable="false" comment="Canonical Payload Hash"/>
+        <column xsi:type="varchar" name="state_fingerprint" length="80" nullable="false" comment="Canonical State Fingerprint"/>
+        <column xsi:type="varchar" name="status" length="16" nullable="false" default="in_progress" comment="in_progress|completed|failed|indeterminate"/>
+        <column xsi:type="int" name="creditmemo_id" unsigned="true" nullable="true" comment="Created Creditmemo Entity Id"/>
+        <column xsi:type="varchar" name="creditmemo_increment_id" length="50" nullable="true" comment="Created Creditmemo Increment Id"/>
+        <column xsi:type="mediumtext" name="response_json" nullable="true" comment="Serialized Response Replayed On Retry"/>
+        <column xsi:type="text" name="error_message" nullable="true" comment="Last Error Message"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_IDEMPOTENCY_KEY">
+            <column name="idempotency_key"/>
+        </constraint>
+        <index referenceId="EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_STATUS_CREATED_AT" indexType="btree">
+            <column name="status"/>
+            <column name="created_at"/>
+        </index>
+    </table>
+</schema>

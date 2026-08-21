@@ -42,4 +42,37 @@
         </resources>
     </route>
 
+    <!--
+        Odoo driven refunds.
+
+        The two preview routes are POST although they change nothing: the
+        request carries an item list that does not fit in a query string, and
+        Magento's webapi router only deserialises complex objects from a body.
+        They remain side effect free - see \Emipro\Apichange\Api\RefundPreviewInterface.
+
+        The ACL resource is the credit memo one rather than the blanket `admin`
+        used by the older routes above, so an Odoo integration can be granted
+        refunds without being granted everything else.
+    -->
+    <route url="/V1/emipro/refund/preview/order" method="POST">
+        <service class="Emipro\Apichange\Api\RefundPreviewInterface" method="previewOrder"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_creditmemo"/>
+        </resources>
+    </route>
+
+    <route url="/V1/emipro/refund/preview/invoice" method="POST">
+        <service class="Emipro\Apichange\Api\RefundPreviewInterface" method="previewInvoice"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_creditmemo"/>
+        </resources>
+    </route>
+
+    <route url="/V1/emipro/refund" method="POST">
+        <service class="Emipro\Apichange\Api\RefundInterface" method="execute"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_creditmemo"/>
+        </resources>
+    </route>
+
 </routes>

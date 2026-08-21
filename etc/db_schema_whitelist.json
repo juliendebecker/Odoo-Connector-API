@@ -1,0 +1,28 @@
+{
+    "emipro_apichange_refund_idempotency": {
+        "column": {
+            "entity_id": true,
+            "idempotency_key": true,
+            "order_id": true,
+            "invoice_id": true,
+            "source": true,
+            "payload_hash": true,
+            "state_fingerprint": true,
+            "status": true,
+            "creditmemo_id": true,
+            "creditmemo_increment_id": true,
+            "response_json": true,
+            "error_message": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_ORDER_ID": true,
+            "EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_STATUS_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "EMIPRO_APICHANGE_REFUND_IDEMPOTENCY_IDEMPOTENCY_KEY": true
+        }
+    }
+}
