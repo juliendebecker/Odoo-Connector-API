@@ -7,7 +7,7 @@ use Emipro\Apichange\Model\Refund\StateFingerprint;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Sales\Api\CreditmemoRepositoryInterface;
-use Magento\Sales\Api\Data\InvoiceInterface;
+use Magento\Sales\Model\Order\Invoice;
 use PHPUnit\Framework\TestCase;
 
 class StateFingerprintTest extends TestCase
@@ -20,10 +20,11 @@ class StateFingerprintTest extends TestCase
             public function getBaseRowTotal() { return 145.83; }
         };
 
-        $invoice = $this->getMockBuilder(InvoiceInterface::class)
-            ->addMethods(['getAllItems'])
+        $invoice = $this->getMockBuilder(Invoice::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getAllItems'])
             ->getMock();
-        $invoice->method('getItems')->willReturn([
+        $invoice->setData('items', [
             ['order_item_id' => 3734400, 'qty' => 20],
         ]);
         $invoice->method('getAllItems')->willReturn([$item]);
@@ -44,4 +45,3 @@ class StateFingerprintTest extends TestCase
         $this->assertSame('145.8300', $description['items'][0]['base_row_total']);
     }
 }
-
