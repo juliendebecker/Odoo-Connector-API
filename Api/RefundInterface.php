@@ -16,7 +16,7 @@ interface RefundInterface
     /**
      * @api
      * @param \Emipro\Apichange\Api\Data\RefundRequestInterface $request
-     * @return mixed[] Refund result contract.
+     * @return string JSON-encoded refund result contract.
      */
     public function execute(\Emipro\Apichange\Api\Data\RefundRequestInterface $request);
 }

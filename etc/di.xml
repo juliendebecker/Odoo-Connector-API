@@ -14,8 +14,8 @@
 	<preference for="Emipro\Apichange\Api\Data\UpdateStockInterface"
         type="Emipro\Apichange\Model\UpdateStock" />
     <!-- Odoo driven refunds: preview + guarded commit -->
-    <preference for="Emipro\Apichange\Api\RefundPreviewInterface" type="Emipro\Apichange\Model\RefundPreview" />
-    <preference for="Emipro\Apichange\Api\RefundInterface" type="Emipro\Apichange\Model\RefundCommit" />
+    <preference for="Emipro\Apichange\Api\RefundPreviewInterface" type="Emipro\Apichange\Model\RefundPreviewJsonAdapter" />
+    <preference for="Emipro\Apichange\Api\RefundInterface" type="Emipro\Apichange\Model\RefundJsonAdapter" />
     <preference for="Emipro\Apichange\Api\Data\RefundRequestInterface"
         type="Emipro\Apichange\Model\Refund\Data\RefundRequest" />
     <preference for="Emipro\Apichange\Api\Data\RefundItemInterface"

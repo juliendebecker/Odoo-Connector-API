@@ -17,7 +17,7 @@ interface RefundPreviewInterface
      *
      * @api
      * @param \Emipro\Apichange\Api\Data\RefundRequestInterface $request
-     * @return mixed[] Versioned refund preview contract.
+     * @return string JSON-encoded versioned refund preview contract.
      */
     public function previewOrder(\Emipro\Apichange\Api\Data\RefundRequestInterface $request);
 
@@ -26,7 +26,7 @@ interface RefundPreviewInterface
      *
      * @api
      * @param \Emipro\Apichange\Api\Data\RefundRequestInterface $request
-     * @return mixed[] Versioned refund preview contract.
+     * @return string JSON-encoded versioned refund preview contract.
      */
     public function previewInvoice(\Emipro\Apichange\Api\Data\RefundRequestInterface $request);
 }
