@@ -180,7 +180,10 @@ class ContractSerializer
      */
     private function serializeTotals(Creditmemo $creditmemo)
     {
-        $totals = ['total_qty' => $this->canonicalizer->scalar((float) $creditmemo->getTotalQty())];
+        // Read the physical creditmemo column like every other total. This
+        // avoids depending on Magento's magic getter (and keeps the contract
+        // serializer compatible with strict/mock objects).
+        $totals = ['total_qty' => $this->canonicalizer->scalar((float) $creditmemo->getData('total_qty'))];
         foreach (self::$totalColumns as $column) {
             $totals[$column] = $this->canonicalizer->nullableScalar($creditmemo->getData($column));
         }

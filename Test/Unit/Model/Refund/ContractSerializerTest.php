@@ -50,7 +50,6 @@ class ContractSerializerTest extends TestCase
     {
         $creditmemo = $this->createMock(Creditmemo::class);
         $creditmemo->method('getAllItems')->willReturn($items);
-        $creditmemo->method('getTotalQty')->willReturn(isset($totals['total_qty']) ? $totals['total_qty'] : 0);
         $creditmemo->method('getData')->willReturnCallback(function ($key) use ($totals) {
             return array_key_exists($key, $totals) ? $totals[$key] : null;
         });
