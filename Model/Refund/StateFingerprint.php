@@ -191,7 +191,14 @@ class StateFingerprint
     private function describeInvoice(InvoiceInterface $invoice)
     {
         $items = [];
-        foreach ((array) $invoice->getItems() as $item) {
+        // The concrete Invoice model stores a REST-facing `items` data value
+        // that can be an array of arrays after repository plugins run. The
+        // domain objects used by refund calculations live in getAllItems().
+        // Fingerprint those objects, exactly as Magento's refund engine does.
+        $invoiceItems = method_exists($invoice, 'getAllItems')
+            ? $invoice->getAllItems()
+            : $invoice->getItems();
+        foreach ((array) $invoiceItems as $item) {
             $items[(int) $item->getOrderItemId()] = [
                 'order_item_id' => (string) $item->getOrderItemId(),
                 'qty' => $this->canonicalizer->nullableScalar($item->getQty()),
