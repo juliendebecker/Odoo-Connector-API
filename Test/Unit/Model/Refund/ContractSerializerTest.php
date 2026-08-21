@@ -148,6 +148,20 @@ class ContractSerializerTest extends TestCase
         $this->assertSame([2, 5, 9], array_column($contract['items'], 'order_item_id'));
     }
 
+    public function testZeroQuantityFactoryItemsAreExcluded()
+    {
+        $contract = $this->serializer->serialize(
+            $this->creditmemo([$this->item(9, ['qty' => 0]), $this->item(2, ['qty' => 18])]),
+            $this->order(),
+            null,
+            Contract::SOURCE_INVOICE,
+            true
+        );
+
+        $this->assertSame([2], array_column($contract['items'], 'order_item_id'));
+        $this->assertSame('18.0000', $contract['items'][0]['qty']);
+    }
+
     public function testItemAmountsAreCanonicalised()
     {
         $contract = $this->serializer->serialize(

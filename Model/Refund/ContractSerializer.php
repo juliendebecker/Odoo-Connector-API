@@ -152,6 +152,13 @@ class ContractSerializer
     {
         $items = [];
         foreach ($creditmemo->getAllItems() as $item) {
+            // CreditmemoFactory keeps every invoice item in the in-memory
+            // aggregate and assigns qty=0 to unselected rows. They are not part
+            // of the refund payload or amount and must not appear as foreign
+            // refunded lines in the API contract.
+            if ((float) $item->getQty() <= 0.0) {
+                continue;
+            }
             $row = [
                 'order_item_id' => (int) $item->getOrderItemId(),
                 'sku' => (string) $item->getSku(),
